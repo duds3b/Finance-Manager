@@ -44,7 +44,7 @@ fun TelaPrincipal(repo: Repositorio) {
         ) {
             item {
                 Text(
-                    "Gestão Financeira",
+                    "Finance Manager",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -58,9 +58,9 @@ fun TelaPrincipal(repo: Repositorio) {
                 )
             }
             item { GraficoCategorias(transacoes) }
-            item { Text("Transações", style = MaterialTheme.typography.titleMedium) }
+            item { Text("Transactions", style = MaterialTheme.typography.titleMedium) }
             if (transacoes.isEmpty()) {
-                item { Text("Nenhuma transação. Toque no + para adicionar.") }
+                item { Text("No transactions yet. Tap + to add one.") }
             }
             items(transacoes.sortedByDescending { it.id }, key = { it.id }) { t ->
                 ItemTransacao(
@@ -121,16 +121,16 @@ fun CardResumo(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text("Renda mensal", style = MaterialTheme.typography.bodySmall)
+                    Text("Monthly income", style = MaterialTheme.typography.bodySmall)
                     Text(formatar(renda), fontWeight = FontWeight.Bold)
                 }
                 TextButton(onClick = onAlterarRenda) {
-                    Text(if (renda == 0.0) "Definir" else "Alterar")
+                    Text(if (renda == 0.0) "Set" else "Change")
                 }
             }
 
             Spacer(Modifier.height(8.dp))
-            Text("Saldo do mês")
+            Text("Monthly balance")
             Text(
                 formatar(saldo),
                 fontSize = 28.sp,
@@ -140,8 +140,8 @@ fun CardResumo(
 
             Spacer(Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Extras: ${formatar(receitas)}", color = VERDE)
-                Text("Despesas: ${formatar(despesas)}", color = VERMELHO)
+                Text("Extra: ${formatar(receitas)}", color = VERDE)
+                Text("Expenses: ${formatar(despesas)}", color = VERMELHO)
             }
 
             if (renda > 0) {
@@ -149,7 +149,7 @@ fun CardResumo(
                 val fracao = (despesas / renda).toFloat().coerceIn(0f, 1f)
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    "Você já gastou $porcentagem% da sua renda",
+                    "You have spent $porcentagem% of your income",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(4.dp))
@@ -183,13 +183,13 @@ fun DialogoRenda(rendaAtual: Double, onFechar: () -> Unit, onSalvar: (Double) ->
 
     AlertDialog(
         onDismissRequest = onFechar,
-        title = { Text("Quanto você ganha por mês?") },
+        title = { Text("How much do you earn per month?") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
                     value = texto,
                     onValueChange = { texto = it },
-                    label = { Text("Renda mensal") },
+                    label = { Text("Monthly income") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
@@ -200,14 +200,14 @@ fun DialogoRenda(rendaAtual: Double, onFechar: () -> Unit, onSalvar: (Double) ->
             Button(onClick = {
                 val v = texto.replace(",", ".").toDoubleOrNull()
                 if (v == null || v < 0) {
-                    erro = "Valor inválido"
+                    erro = "Invalid amount"
                 } else {
                     onSalvar(v)
                 }
-            }) { Text("Salvar") }
+            }) { Text("Save") }
         },
         dismissButton = {
-            TextButton(onClick = onFechar) { Text("Cancelar") }
+            TextButton(onClick = onFechar) { Text("Cancel") }
         }
     )
 }
@@ -221,8 +221,8 @@ fun ItemTransacao(t: Transacao, onEditar: () -> Unit, onExcluir: () -> Unit) {
                 Text(t.descricao, fontWeight = FontWeight.Bold)
                 Text("${t.categoria} • ${t.data}", style = MaterialTheme.typography.bodySmall)
                 Row {
-                    TextButton(onClick = onEditar) { Text("Editar") }
-                    TextButton(onClick = onExcluir) { Text("Excluir", color = VERMELHO) }
+                    TextButton(onClick = onEditar) { Text("Edit") }
+                    TextButton(onClick = onExcluir) { Text("Delete", color = VERMELHO) }
                 }
             }
             Text(
@@ -244,34 +244,34 @@ fun DialogoTransacao(atual: Transacao?, onFechar: () -> Unit, onSalvar: (Transac
 
     AlertDialog(
         onDismissRequest = onFechar,
-        title = { Text(if (atual == null) "Nova transação" else "Editar transação") },
+        title = { Text(if (atual == null) "New transaction" else "Edit transaction") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
                     value = descricao,
                     onValueChange = { descricao = it },
-                    label = { Text("Descrição") },
+                    label = { Text("Description") },
                     singleLine = true
                 )
                 OutlinedTextField(
                     value = valor,
                     onValueChange = { valor = it },
-                    label = { Text("Valor") },
+                    label = { Text("Amount") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
                 OutlinedTextField(
                     value = categoria,
                     onValueChange = { categoria = it },
-                    label = { Text("Categoria ex Mercado") },
+                    label = { Text("Category e.g. Groceries") },
                     singleLine = true
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(selected = tipo == "Despesa", onClick = { tipo = "Despesa" })
-                    Text("Despesa")
+                    Text("Expense")
                     Spacer(Modifier.width(12.dp))
                     RadioButton(selected = tipo == "Receita", onClick = { tipo = "Receita" })
-                    Text("Receita")
+                    Text("Income")
                 }
                 if (erro.isNotEmpty()) Text(erro, color = VERMELHO)
             }
@@ -280,26 +280,26 @@ fun DialogoTransacao(atual: Transacao?, onFechar: () -> Unit, onSalvar: (Transac
             Button(onClick = {
                 val v = valor.replace(",", ".").toDoubleOrNull()
                 if (descricao.isBlank()) {
-                    erro = "Preencha a descrição"
+                    erro = "Please enter a description"
                 } else if (v == null || v <= 0) {
-                    erro = "Valor inválido"
+                    erro = "Invalid amount"
                 } else {
                     onSalvar(
                         Transacao(
                             id = atual?.id ?: System.currentTimeMillis(),
                             descricao = descricao.trim(),
                             valor = v,
-                            categoria = categoria.trim().ifBlank { "Outros" },
+                            categoria = categoria.trim().ifBlank { "Other" },
                             tipo = tipo,
                             data = atual?.data
                                 ?: SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
                         )
                     )
                 }
-            }) { Text("Salvar") }
+            }) { Text("Save") }
         },
         dismissButton = {
-            TextButton(onClick = onFechar) { Text("Cancelar") }
+            TextButton(onClick = onFechar) { Text("Cancel") }
         }
     )
 }
