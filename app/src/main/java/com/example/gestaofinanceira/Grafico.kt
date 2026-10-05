@@ -25,9 +25,9 @@ fun GraficoCategorias(transacoes: List<Transacao>) {
 
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
-            Text("Despesas por categoria", style = MaterialTheme.typography.titleMedium)
+            Text("Expenses by category", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(10.dp))
-            if (totais.isEmpty()) Text("Nenhuma despesa ainda")
+            if (totais.isEmpty()) Text("No expenses yet")
             totais.forEachIndexed { i, (cat, total) ->
                 Text("$cat  ${formatar(total)}", style = MaterialTheme.typography.bodySmall)
                 Box(
