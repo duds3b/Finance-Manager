@@ -1,4 +1,4 @@
-# 💰 Gestão Financeira
+# 💰 Finance Manager
 
 A simple, offline personal finance app for Android, built with Kotlin and Jetpack Compose.
 
